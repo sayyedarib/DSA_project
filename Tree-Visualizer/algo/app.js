@@ -7,8 +7,19 @@ let input;
  const treeAndArray = () =>{
     reset();
     let inputText = document.getElementById("array-input")
+    document.querySelector("#visual-title").innerHTML = "Binary Tree and Array";
+    document.querySelector("#instructions").innerHTML = "Click a value in the binary tree or array to highlight its corresponding location in the data"
+    if(inputText.value!==''){
+        input = inputText.value.trim().split(/\s+|,+/g).map((num)=>parseInt(num));
+        createBinaryTreeAndArr(input);
+    }
+}
+
+const heapify = ()=>{
+    reset();
+    let inputText = document.getElementById("array-input")
     if(inputText.value !== ''){
-        input = inputText.calue.trim().split(/\s+|\,+/g).map((num)=>parseInt(num));
+        input = inputText.value.trim().split(/\s+|\,+/g).map((num)=>parseInt(num));
         makeHeap(input, input.length);
         createBinaryTreeAndArr(input);
         document.getElementById('instructions').innerHTML = "<p>Parent's value is always greater than or equal to the values of its children.</p>";

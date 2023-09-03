@@ -1,3 +1,6 @@
+let regFill = "green";
+let highlightFill = "lightblue"
+
 let regFillText = "black";
 let highlightFillText = "white";
 
@@ -9,7 +12,7 @@ const xSpacing = 200;
 const ySpacing = 100;
 const radius = 35;
 
-const Node = (value, index, depth, cx, cy) =>{
+function Node (value, index, depth, cx, cy){
     this.value = value;
     this.index = index;
     this.depth = depth;
@@ -22,33 +25,33 @@ const Node = (value, index, depth, cx, cy) =>{
     this.highlighted = false;
 } 
 
-const Tree = () => {
+function Tree() {
     this.nodes = [];
     this.data = [];
     this.text = [];
 
-    this.addNode = function(node){
+    this.addNode = (node)=>{
         this.data.push(node);
-        this.text = treeContainer.selectAll("text.circle").data(this.data).enter().append("text").attr("class", "circle").attr("x", d=>d.cx - (d.value.toString().length*4)).attr("y", 0).text(d=>d.value).transition().duration(100).attr("y", d=>d.cy + 5).call(textAttr, regFillText, "sans-serif", "len");
+        this.text = treeContainer.selectAll("text.circle").data(this.data).enter().append("text").attr("class", "circle").attr("x", d=>d.cx - (d.value.toString().length*4)).attr("y", 0).text(d=>d.value).transition().duration(100).attr("y", d=>d.cy + 5).call(textAttr, regFillText, "sans-serif", "1em");
         this.nodes = treeContainer.selectAll("circle").data(this.data).enter().append("circle");
     }
 
-    this.updateNode = () =>{
+    this.updateNodes = () =>{
         this.nodes = treeContainer.selectAll("circle").data(this.data).enter().append("circle")
     }
 
     this.swapNodeData = (a, b)=>{
-        let temp = this.data(a);
+        let temp = this.data[a];
         this.data[a] = this.data[b];
         this.data[b] = temp;
     }
 
     this.findNode = (index)=>{
-        return this.nodes.filter((d)=>d.index == index);
+        return this.nodes.filter((d)=>d.index === index);
     }
 
     this.findText = (index) =>{
-        return this.text.filter((d)=> d.index == index);
+        return this.text.filter((d)=> d.index === index);
     }
 
     this.removeNode = (index) =>{
@@ -66,18 +69,18 @@ const Tree = () => {
         start = treeContainer.attr("width")/2;
 
         let i=0;
-        let node = [];
+        let node = {};
 
         while(i<arr.length){
             let depth = Math.ceil(Math.log2(i+2))-1;
             node = new Node(arr[i], i, depth);
 
-            if(i==0){
+            if(i===0){
                 node.cx = start;
                 node.cy = radius;
             }
             else{
-                if(i==leftchild(parent(i))){
+                if(i==leftChild(parent(i))){
                    node.cx = this.data[parent(i)].cx - xSpacing/depth;  
                 }
                 else{
@@ -105,8 +108,8 @@ const Tree = () => {
         const insertNode = (arr, depth, cx) => {
             if(!arr.length){return;}
             let mid = Math.floor(arr.length/2);
-            let node = new Node(arr[mid], null, depth, cx, radius, + (depth*ySpacing));
-
+            let node = new Node(arr[mid], null, depth, cx, radius + (depth*ySpacing));
+            let nextDepth = depth+1;
             node.left = insertNode(arr.slice(0, mid), nextDepth, cx - xSpacing/nextDepth);
             node.right = insertNode(arr.slice(mid+1), nextDepth, cx+xSpacing/nextDepth);
 
@@ -128,24 +131,28 @@ const Tree = () => {
         if(inputArr.slice(midPoint+1).length){
             treeContainer.append("line").call(createLineAttr, "black", start, radius, start + xSpacing, radius+ySpacing);
         }
-        this.addNode = treeContainer.selectAll("circle").raise()
+        this.addNode(root);
+        this.nodes = treeContainer.selectAll("circle").raise()
 
         this.text = treeContainer.selectAll("text.circle").raise();
 
         this.nodes.call(circleAttr);
     }
+        this.size = ()=>{
+            return d3.selectAll("circle").nodes().length;
+        }
 }
     const createArray = (arr, x, y, width, height)=>{
         let arrayData = arr.map((value, i)=>{
             if(i>0){
                 x+=50
             }
-            return {x, y, width, height, color:regFill, value}
+            return {x:x, y:y, width:width, height:height, color:regFill, value:value}
         })
 
-        let elementArr = arrayContainer.selectAll("rect").data(arrayData).enter().append("rect").on("click",addHighlight);
+        let elementsArr = arrayContainer.selectAll("rect").data(arrayData).enter().append("rect").on("click",addHighlight);
         d3.select("#array-visual").attr("align", "center")
-        elementArr.attr("x", d=>d.x).attr("y", d=>d.y).attr("width", d=>d.width)
+        elementsArr.attr("x", d=>d.x).attr("y", d=>d.y).attr("width", d=>d.width)
         
         arrayContainer.selectAll("text.rect").data(arrayData).enter().append("text").attr("class", "rext").on("click", addHighlight).attr("x", d=>d.x+(d.width/2)-(d.value.toString().length*4)).attr("y", d=>d.y+30).text(d=>d.value).call(textAttr, regFillText, "sans-serif", "1rem")
         arrayContainer.selectAll("text.index").data(arrayData).enter().append("text").attr("class", "index").text((d, i)=>`[${i}]`).attr("x", d=>d.x+15).attr("y", d=>d.y-15).call(textAttr, regFillText, "sans-serif", "15px")
@@ -153,10 +160,10 @@ const Tree = () => {
         return arrayData
     }
 
-    const circleAttr=(Selection)=>{
-            Selection.attr("cx", (c)=>{return c.cx}).attr("cy", 0).attr("r", (c)=>{return c.radius}).attr("fill", (c)=>{return c.fill}).transition().duration(300).attr("cy", (c)=>{return c.cy})
+    const circleAttr=(selection)=>{
+            selection.attr("cx", (c)=>{return c.cx}).attr("cy", 0).attr("r", (c)=>{return c.radius}).attr("fill", (c)=>{return c.fill}).transition().duration(300).attr("cy", (c)=>{return c.cy})
     }
-    const textAttr = (selection, fill, fontFamily, fontSize){
+    const textAttr = (selection, fill, fontFamily, fontSize)=>{
         selection.attr("fill", fill).attr("font-family", fontFamily).attr("font-size", fontSize);
     }
 
@@ -186,8 +193,8 @@ const Tree = () => {
 
     const createContainer = (id, arr, width, height) =>{
         let box = calcDimensions(arr);
-        let depth = Math.ceil(Math.log2(arr.length - 1)+2)-1||1;
-        let container = d3.select(`div#{id}`).append('svg').attr('width', width || box.width*600*(.8/depth)*.75).attr('height', height || box.height)
+        let depth = Math.ceil(Math.log2((arr.length - 1)+2))-1||1;
+        let container = d3.select(`div#${id}`).append('svg').attr('width', width || box.width*600*(.8/depth)*.75).attr('height', height || box.height)
 
         return container
     }
