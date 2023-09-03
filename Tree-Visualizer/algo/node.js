@@ -134,7 +134,7 @@ const Tree = () => {
 
         this.nodes.call(circleAttr);
     }
-
+}
     const createArray = (arr, x, y, width, height)=>{
         let arrayData = arr.map((value, i)=>{
             if(i>0){
@@ -152,4 +152,42 @@ const Tree = () => {
         
         return arrayData
     }
-}
+
+    const circleAttr=(Selection)=>{
+            Selection.attr("cx", (c)=>{return c.cx}).attr("cy", 0).attr("r", (c)=>{return c.radius}).attr("fill", (c)=>{return c.fill}).transition().duration(300).attr("cy", (c)=>{return c.cy})
+    }
+    const textAttr = (selection, fill, fontFamily, fontSize){
+        selection.attr("fill", fill).attr("font-family", fontFamily).attr("font-size", fontSize);
+    }
+
+    const createLineAttr = (selection, stroke, x1, y1, x2, y2)=>{
+        selection.style("stroke", stroke).attr("x1", x1).attr("y1", 0).attr("x2", x2).attr("y2", 0).transition().duration(100).attr("y1", y1).attr("y2", y2)
+    }
+
+    const addHighlight = (data, index)=>{
+        removeHighlight();
+        const indexMatch = (d, i) => {return i==index?this:null};
+        d3.selectAll("circle").select(indexMatch).attr("fill", highlightFill);
+        d3.selectAll("rect").select(indexMatch).attr("fill", highlightFill);
+        d3.selectAll("text.circle").select(indexMatch).attr("fill", highlightFillText);
+        d3.selectAll("text.rect").select(indexMatch).attr("fill", highlightFillText);
+    }
+    const removeHighlight = ()=>{
+        d3.selectAll("circle").attr("fill", regFill)
+        d3.selectAll("rect").attr("fill", regFill)
+        d3.selectAll("text.circle").attr("fill", regFillText)
+        d3.selectAll("text.rect").attr("fill", regFillText);
+    }
+
+    const calcDimensions=(arr)=>{
+        let depth = Math.ceil(Math.log2((arr.length -1)+2))-1;
+        return {width:Math.pow(2, depth), height:ySpacing+ySpacing*depth, depth:depth}
+    }
+
+    const createContainer = (id, arr, width, height) =>{
+        let box = calcDimensions(arr);
+        let depth = Math.ceil(Math.log2(arr.length - 1)+2)-1||1;
+        let container = d3.select(`div#{id}`).append('svg').attr('width', width || box.width*600*(.8/depth)*.75).attr('height', height || box.height)
+
+        return container
+    }
