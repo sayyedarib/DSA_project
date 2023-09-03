@@ -135,5 +135,21 @@ const Tree = () => {
         this.nodes.call(circleAttr);
     }
 
-    
+    const createArray = (arr, x, y, width, height)=>{
+        let arrayData = arr.map((value, i)=>{
+            if(i>0){
+                x+=50
+            }
+            return {x, y, width, height, color:regFill, value}
+        })
+
+        let elementArr = arrayContainer.selectAll("rect").data(arrayData).enter().append("rect").on("click",addHighlight);
+        d3.select("#array-visual").attr("align", "center")
+        elementArr.attr("x", d=>d.x).attr("y", d=>d.y).attr("width", d=>d.width)
+        
+        arrayContainer.selectAll("text.rect").data(arrayData).enter().append("text").attr("class", "rext").on("click", addHighlight).attr("x", d=>d.x+(d.width/2)-(d.value.toString().length*4)).attr("y", d=>d.y+30).text(d=>d.value).call(textAttr, regFillText, "sans-serif", "1rem")
+        arrayContainer.selectAll("text.index").data(arrayData).enter().append("text").attr("class", "index").text((d, i)=>`[${i}]`).attr("x", d=>d.x+15).attr("y", d=>d.y-15).call(textAttr, regFillText, "sans-serif", "15px")
+        
+        return arrayData
+    }
 }
