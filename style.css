@@ -1,0 +1,28 @@
+.container{
+    margin:auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+.container a{
+    text-decoration: none;
+    font-size: 2rem;
+    color: green;
+    font-weight: 600;
+}
+.card{
+    background: black;
+    border-radius: 10%;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    text-align: center;
+}
+
+.card img{
+    width: 200px;
+    height: auto;
+    border-radius: 100%;
+}
