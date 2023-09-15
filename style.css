@@ -1,6 +1,7 @@
 .container{
     margin:auto;
     display: flex;
+    gap: 4rem;
     justify-content: center;
     align-items: center;
     text-align: center;
@@ -8,15 +9,18 @@
 .container a{
     text-decoration: none;
     font-size: 2rem;
-    color: green;
+    color: rgb(101, 101, 206);
     font-weight: 600;
 }
 .card{
     background: black;
     border-radius: 10%;
+    height: 18rem;
     padding: 2rem;
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
     gap: 2rem;
     text-align: center;
 }
