@@ -7,10 +7,75 @@
     <script type="text/script" src="sudoko-algo.js"></script>
     <script type="text/javascript" src="analytics.js"></script>
     <style type="text/css">
-
+        body {font-family: 'Gill Sans', Calibri,sans-serif;}
+        #container { text-align: center;}
+        table {border-collapse: collapse; font-size: 2rem; margin: 0 auto; }
+        colgroup, tbody { border: solid medium; }
+        td {border: solid thin; height: 1.4em; width: 1.4em; text-align: center; padding: 0;}
+        botton {margin-top: 15px; font-size: 1.5em;}
+        padd {padding-bottom: 100px;}
     </style>
 </head>
 <body>
-    
+    <div id="container">
+        <h1 class="padd">Sudoku Solver</h1>
+        <table id="sudoku-board">
+            <colgroup><col><col><col>
+                <colgroup><col><col><col>
+                    <colgroup><col><col><col>
+            <tbody>
+                <tr>
+                    <td contenteditable="true"></td>
+                    <td contenteditable="true"></td>
+                    <td contenteditable="true"></td>
+                </tr>
+                <tr>
+                    <td contenteditable="true"></td>
+                    <td contenteditable="true"></td>
+                    <td contenteditable="true"></td>
+                </tr>
+                <tr>
+                    <td contenteditable="true"></td>
+                    <td contenteditable="true"></td>
+                    <td contenteditable="true"></td>
+                </tr>
+            <tbody>
+
+                <tr>
+                    <td contenteditable="true"></td>
+                    <td contenteditable="true"></td>
+                    <td contenteditable="true"></td>
+                </tr>
+                <tr>
+                    <td contenteditable="true"></td>
+                    <td contenteditable="true"></td>
+                    <td contenteditable="true"></td>
+                </tr>
+                <tr>
+                    <td contenteditable="true"></td>
+                    <td contenteditable="true"></td>
+                    <td contenteditable="true"></td>
+                </tr>
+                        <tbody>
+                <tr>
+                    <td contenteditable="true"></td>
+                    <td contenteditable="true"></td>
+                    <td contenteditable="true"></td>
+                </tr>
+                <tr>
+                    <td contenteditable="true"></td>
+                    <td contenteditable="true"></td>
+                    <td contenteditable="true"></td>
+                </tr>
+                <tr>
+                    <td contenteditable="true"></td>
+                    <td contenteditable="true"></td>
+                    <td contenteditable="true"></td>
+                </tr>
+        </table>
+        <div><button id="solve-button">solve!</button></div>
+        <div><button id="solve-button">solve!</button></div>
+    </div>
 </body>
+<script type="text/javascript"></script>
 </html>
